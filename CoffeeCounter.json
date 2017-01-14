@@ -1,1 +1,341 @@
-[{"id":"69b851c3.d3f16","type":"subflow","name":"readCounter","info":"","in":[{"x":40,"y":40,"wires":[{"id":"cb5833fd.5f13"}]}],"out":[{"x":460,"y":40,"wires":[{"id":"14b6b55e.6f3edb","port":0}]}]},{"id":"cb5833fd.5f13","type":"file in","z":"69b851c3.d3f16","name":"read","filename":"counter.txt","format":"utf8","x":170,"y":40,"wires":[["14b6b55e.6f3edb"]]},{"id":"14b6b55e.6f3edb","type":"function","z":"69b851c3.d3f16","name":"parse || 0","func":"var nr = parseInt(msg.payload) || 0;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;","outputs":1,"noerr":0,"x":340,"y":40,"wires":[[]]},{"id":"5cdddca8.87d154","type":"mqtt in","z":"cc75ded0.72804","name":"release","topic":"/opentrigger/signals/release","qos":"2","broker":"4f71b28a.9f9efc","x":110,"y":80,"wires":[["95f044f5.727b58"]]},{"id":"671254cf.1a4eec","type":"debug","z":"cc75ded0.72804","name":"","active":true,"console":"false","complete":"payload","x":710,"y":140,"wires":[]},{"id":"95f044f5.727b58","type":"json","z":"cc75ded0.72804","name":"","x":230,"y":80,"wires":[["a4e284e5.98aca8"]]},{"id":"a4e284e5.98aca8","type":"function","z":"cc75ded0.72804","name":"coapAddr","func":"var p = msg.payload;\nmsg.opentriggerPayload = p;\nmsg.payload = p.UniqueIdentifier + \"asdf\";\nreturn msg;","outputs":1,"noerr":0,"x":360,"y":80,"wires":[["e2d76c68.4f13b"]]},{"id":"e2d76c68.4f13b","type":"exec","z":"cc75ded0.72804","command":"distributord --ledblink","addpay":true,"append":"","useSpawn":"","timer":"","name":"coap","x":230,"y":140,"wires":[["ac0a950e.b2f9c8","68336b85.2613e4"],[],[]]},{"id":"68336b85.2613e4","type":"file in","z":"cc75ded0.72804","name":"read","filename":"counter.txt","format":"utf8","x":230,"y":200,"wires":[["a7a730d9.5165b"]]},{"id":"8119b5e9.5b1218","type":"file","z":"cc75ded0.72804","name":"write","filename":"counter.txt","appendNewline":false,"createDir":false,"overwriteFile":"true","x":470,"y":200,"wires":[]},{"id":"a7a730d9.5165b","type":"function","z":"cc75ded0.72804","name":"+1","func":"var nr = parseInt(msg.payload) || 0;\nnr++;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;","outputs":1,"noerr":0,"x":350,"y":200,"wires":[["8119b5e9.5b1218","7f0bb8e3.4cfc78"]]},{"id":"28036144.0df59e","type":"json","z":"cc75ded0.72804","name":"","x":550,"y":140,"wires":[["671254cf.1a4eec"]]},{"id":"ac0a950e.b2f9c8","type":"function","z":"cc75ded0.72804","name":"last line","func":"var lines = msg.payload.split('\\n');\nmsg.payload = lines[lines.length-2];\nreturn msg;","outputs":1,"noerr":0,"x":420,"y":140,"wires":[["28036144.0df59e"]]},{"id":"72768e4e.178d6","type":"subflow:69b851c3.d3f16","z":"cc75ded0.72804","name":"","x":330,"y":300,"wires":[["7f0bb8e3.4cfc78"]]},{"id":"7f0bb8e3.4cfc78","type":"websocket out","z":"cc75ded0.72804","name":"","server":"f20b59d7.051168","client":"","x":520,"y":300,"wires":[]},{"id":"209e08d3.d0f908","type":"http response","z":"cc75ded0.72804","name":"","x":490,"y":360,"wires":[]},{"id":"36a10753.5cee98","type":"http in","z":"cc75ded0.72804","name":"","url":"/getCounter","method":"get","swaggerDoc":"","x":140,"y":360,"wires":[["6c74b37c.40fd8c"]]},{"id":"6c74b37c.40fd8c","type":"subflow:69b851c3.d3f16","z":"cc75ded0.72804","x":330,"y":360,"wires":[["209e08d3.d0f908"]]},{"id":"51fa73dc.17917c","type":"inject","z":"cc75ded0.72804","name":"startup","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":true,"x":170,"y":300,"wires":[["72768e4e.178d6"]]},{"id":"a6a08af1.934ae8","type":"inject","z":"cc75ded0.72804","name":"","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"x":100,"y":200,"wires":[["68336b85.2613e4"]]},{"id":"4f71b28a.9f9efc","type":"mqtt-broker","z":"","broker":"localhost","port":"1883","clientid":"","usetls":false,"compatmode":true,"keepalive":"60","cleansession":true,"willTopic":"","willQos":"0","willPayload":"","birthTopic":"","birthQos":"0","birthPayload":""},{"id":"f20b59d7.051168","type":"websocket-listener","z":"","path":"/ws/counter","wholemsg":"false"}]
+[
+    {
+        "id": "498b1f31.4001",
+        "type": "tab",
+        "label": "CoffeeCounter"
+    },
+    {
+        "id": "a12955e.529e7a8",
+        "type": "subflow",
+        "name": "readCounter",
+        "info": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "64bd5001.5d2f1"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 460,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "a25f92a7.49665",
+                        "port": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "4871bb2a.b42244",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "5c0c96ed.879918",
+        "type": "websocket-listener",
+        "z": "",
+        "path": "/ws/counter",
+        "wholemsg": "false"
+    },
+    {
+        "id": "74661dc5.7c9bd4",
+        "type": "mqtt in",
+        "z": "498b1f31.4001",
+        "name": "release",
+        "topic": "/opentrigger/signals/release",
+        "qos": "2",
+        "broker": "4871bb2a.b42244",
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "bd64075e.fe3288"
+            ]
+        ]
+    },
+    {
+        "id": "61262b92.679274",
+        "type": "debug",
+        "z": "498b1f31.4001",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 710,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "bd64075e.fe3288",
+        "type": "json",
+        "z": "498b1f31.4001",
+        "name": "",
+        "x": 230,
+        "y": 80,
+        "wires": [
+            [
+                "3287eab3.ed4276"
+            ]
+        ]
+    },
+    {
+        "id": "3287eab3.ed4276",
+        "type": "function",
+        "z": "498b1f31.4001",
+        "name": "coapAddr",
+        "func": "var p = msg.payload;\nmsg.opentriggerPayload = p;\nmsg.payload = p.UniqueIdentifier;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 80,
+        "wires": [
+            [
+                "fd2cccf2.91e06"
+            ]
+        ]
+    },
+    {
+        "id": "fd2cccf2.91e06",
+        "type": "exec",
+        "z": "498b1f31.4001",
+        "command": "distributord --ledblink",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "coap",
+        "x": 230,
+        "y": 140,
+        "wires": [
+            [
+                "87782c8c.cfd68",
+                "e1300bd9.89c3a8"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e1300bd9.89c3a8",
+        "type": "file in",
+        "z": "498b1f31.4001",
+        "name": "read",
+        "filename": "counter.txt",
+        "format": "utf8",
+        "x": 230,
+        "y": 200,
+        "wires": [
+            [
+                "9a4ea67f.b88df8"
+            ]
+        ]
+    },
+    {
+        "id": "41f4e9b6.7abfd8",
+        "type": "file",
+        "z": "498b1f31.4001",
+        "name": "write",
+        "filename": "counter.txt",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 470,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "9a4ea67f.b88df8",
+        "type": "function",
+        "z": "498b1f31.4001",
+        "name": "+1",
+        "func": "var nr = parseInt(msg.payload) || 0;\nnr++;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "41f4e9b6.7abfd8",
+                "36a51534.e1d82a"
+            ]
+        ]
+    },
+    {
+        "id": "8ef7931a.5af1",
+        "type": "json",
+        "z": "498b1f31.4001",
+        "name": "",
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [
+                "61262b92.679274"
+            ]
+        ]
+    },
+    {
+        "id": "87782c8c.cfd68",
+        "type": "function",
+        "z": "498b1f31.4001",
+        "name": "last line",
+        "func": "var lines = msg.payload.split('\\n');\nmsg.payload = lines[lines.length-2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 420,
+        "y": 140,
+        "wires": [
+            [
+                "8ef7931a.5af1"
+            ]
+        ]
+    },
+    {
+        "id": "64bd5001.5d2f1",
+        "type": "file in",
+        "z": "a12955e.529e7a8",
+        "name": "read",
+        "filename": "counter.txt",
+        "format": "utf8",
+        "x": 170,
+        "y": 40,
+        "wires": [
+            [
+                "a25f92a7.49665"
+            ]
+        ]
+    },
+    {
+        "id": "a25f92a7.49665",
+        "type": "function",
+        "z": "a12955e.529e7a8",
+        "name": "parse || 0",
+        "func": "var nr = parseInt(msg.payload) || 0;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "429b3d8b.96cec4",
+        "type": "subflow:a12955e.529e7a8",
+        "z": "498b1f31.4001",
+        "name": "",
+        "x": 330,
+        "y": 300,
+        "wires": [
+            [
+                "36a51534.e1d82a"
+            ]
+        ]
+    },
+    {
+        "id": "36a51534.e1d82a",
+        "type": "websocket out",
+        "z": "498b1f31.4001",
+        "name": "",
+        "server": "5c0c96ed.879918",
+        "client": "",
+        "x": 520,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6e5ae304.b4711c",
+        "type": "http response",
+        "z": "498b1f31.4001",
+        "name": "",
+        "x": 490,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "5f8f2d72.18b774",
+        "type": "http in",
+        "z": "498b1f31.4001",
+        "name": "",
+        "url": "/getCounter",
+        "method": "get",
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 360,
+        "wires": [
+            [
+                "89b40c54.c9bc4"
+            ]
+        ]
+    },
+    {
+        "id": "89b40c54.c9bc4",
+        "type": "subflow:a12955e.529e7a8",
+        "z": "498b1f31.4001",
+        "x": 330,
+        "y": 360,
+        "wires": [
+            [
+                "6e5ae304.b4711c"
+            ]
+        ]
+    },
+    {
+        "id": "1ab647e7.ba9e28",
+        "type": "inject",
+        "z": "498b1f31.4001",
+        "name": "startup",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "429b3d8b.96cec4"
+            ]
+        ]
+    },
+    {
+        "id": "811c9624.4b5ef8",
+        "type": "inject",
+        "z": "498b1f31.4001",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 100,
+        "y": 200,
+        "wires": [
+            [
+                "e1300bd9.89c3a8"
+            ]
+        ]
+    }
+]
