@@ -1,11 +1,11 @@
 [
     {
-        "id": "498b1f31.4001",
+        "id": "741e0568.b754bc",
         "type": "tab",
         "label": "CoffeeCounter"
     },
     {
-        "id": "a12955e.529e7a8",
+        "id": "5ae80e1e.d2cf7",
         "type": "subflow",
         "name": "readCounter",
         "info": "",
@@ -15,7 +15,7 @@
                 "y": 40,
                 "wires": [
                     {
-                        "id": "64bd5001.5d2f1"
+                        "id": "f7e323cc.b8032"
                     }
                 ]
             }
@@ -26,7 +26,7 @@
                 "y": 40,
                 "wires": [
                     {
-                        "id": "a25f92a7.49665",
+                        "id": "435d24f0.62320c",
                         "port": 0
                     }
                 ]
@@ -34,7 +34,7 @@
         ]
     },
     {
-        "id": "4871bb2a.b42244",
+        "id": "7135cb13.57e294",
         "type": "mqtt-broker",
         "z": "",
         "broker": "localhost",
@@ -52,168 +52,90 @@
         "birthPayload": ""
     },
     {
-        "id": "5c0c96ed.879918",
+        "id": "b691a89f.868a78",
         "type": "websocket-listener",
         "z": "",
         "path": "/ws/counter",
         "wholemsg": "false"
     },
     {
-        "id": "74661dc5.7c9bd4",
+        "id": "b61b96e5.200028",
         "type": "mqtt in",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "release",
         "topic": "/opentrigger/signals/release",
         "qos": "2",
-        "broker": "4871bb2a.b42244",
+        "broker": "7135cb13.57e294",
         "x": 110,
-        "y": 80,
+        "y": 100,
         "wires": [
             [
-                "bd64075e.fe3288"
+                "384b5fd7.762f"
             ]
         ]
     },
     {
-        "id": "61262b92.679274",
-        "type": "debug",
-        "z": "498b1f31.4001",
-        "name": "",
-        "active": true,
-        "console": "false",
-        "complete": "payload",
-        "x": 710,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "bd64075e.fe3288",
+        "id": "384b5fd7.762f",
         "type": "json",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "",
         "x": 230,
-        "y": 80,
+        "y": 100,
         "wires": [
             [
-                "3287eab3.ed4276"
+                "3d74f21b.3264ce"
             ]
         ]
     },
     {
-        "id": "3287eab3.ed4276",
-        "type": "function",
-        "z": "498b1f31.4001",
-        "name": "coapAddr",
-        "func": "var p = msg.payload;\nmsg.opentriggerPayload = p;\nmsg.payload = p.UniqueIdentifier;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 360,
-        "y": 80,
-        "wires": [
-            [
-                "fd2cccf2.91e06"
-            ]
-        ]
-    },
-    {
-        "id": "fd2cccf2.91e06",
-        "type": "exec",
-        "z": "498b1f31.4001",
-        "command": "distributord --ledblink",
-        "addpay": true,
-        "append": "",
-        "useSpawn": "",
-        "timer": "",
-        "name": "coap",
-        "x": 230,
-        "y": 140,
-        "wires": [
-            [
-                "87782c8c.cfd68",
-                "e1300bd9.89c3a8"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "e1300bd9.89c3a8",
+        "id": "f69e399.12c62c8",
         "type": "file in",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "read",
         "filename": "counter.txt",
         "format": "utf8",
-        "x": 230,
-        "y": 200,
+        "x": 270,
+        "y": 220,
         "wires": [
             [
-                "9a4ea67f.b88df8"
+                "1b7fd2de.aa4b7d"
             ]
         ]
     },
     {
-        "id": "41f4e9b6.7abfd8",
+        "id": "daaf8786.5d03b8",
         "type": "file",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "write",
         "filename": "counter.txt",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
-        "x": 470,
-        "y": 200,
+        "x": 510,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "9a4ea67f.b88df8",
+        "id": "1b7fd2de.aa4b7d",
         "type": "function",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "+1",
         "func": "var nr = parseInt(msg.payload) || 0;\nnr++;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 350,
-        "y": 200,
+        "x": 390,
+        "y": 220,
         "wires": [
             [
-                "41f4e9b6.7abfd8",
-                "36a51534.e1d82a"
+                "daaf8786.5d03b8",
+                "3364c9d6.5d56a6"
             ]
         ]
     },
     {
-        "id": "8ef7931a.5af1",
-        "type": "json",
-        "z": "498b1f31.4001",
-        "name": "",
-        "x": 550,
-        "y": 140,
-        "wires": [
-            [
-                "61262b92.679274"
-            ]
-        ]
-    },
-    {
-        "id": "87782c8c.cfd68",
-        "type": "function",
-        "z": "498b1f31.4001",
-        "name": "last line",
-        "func": "var lines = msg.payload.split('\\n');\nmsg.payload = lines[lines.length-2];\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 420,
-        "y": 140,
-        "wires": [
-            [
-                "8ef7931a.5af1"
-            ]
-        ]
-    },
-    {
-        "id": "64bd5001.5d2f1",
+        "id": "f7e323cc.b8032",
         "type": "file in",
-        "z": "a12955e.529e7a8",
+        "z": "5ae80e1e.d2cf7",
         "name": "read",
         "filename": "counter.txt",
         "format": "utf8",
@@ -221,14 +143,14 @@
         "y": 40,
         "wires": [
             [
-                "a25f92a7.49665"
+                "435d24f0.62320c"
             ]
         ]
     },
     {
-        "id": "a25f92a7.49665",
+        "id": "435d24f0.62320c",
         "type": "function",
-        "z": "a12955e.529e7a8",
+        "z": "5ae80e1e.d2cf7",
         "name": "parse || 0",
         "func": "var nr = parseInt(msg.payload) || 0;\nnode.status({fill:\"green\",shape:\"dot\",text:nr});\nmsg.payload=nr;\n\n\nreturn msg;",
         "outputs": 1,
@@ -240,89 +162,89 @@
         ]
     },
     {
-        "id": "429b3d8b.96cec4",
-        "type": "subflow:a12955e.529e7a8",
-        "z": "498b1f31.4001",
+        "id": "8d268c82.0fc73",
+        "type": "subflow:5ae80e1e.d2cf7",
+        "z": "741e0568.b754bc",
         "name": "",
-        "x": 330,
-        "y": 300,
+        "x": 370,
+        "y": 320,
         "wires": [
             [
-                "36a51534.e1d82a"
+                "3364c9d6.5d56a6"
             ]
         ]
     },
     {
-        "id": "36a51534.e1d82a",
+        "id": "3364c9d6.5d56a6",
         "type": "websocket out",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "",
-        "server": "5c0c96ed.879918",
+        "server": "b691a89f.868a78",
         "client": "",
-        "x": 520,
-        "y": 300,
+        "x": 560,
+        "y": 320,
         "wires": []
     },
     {
-        "id": "6e5ae304.b4711c",
+        "id": "d1a8ea74.4e33c8",
         "type": "http response",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "",
-        "x": 490,
-        "y": 360,
+        "x": 530,
+        "y": 380,
         "wires": []
     },
     {
-        "id": "5f8f2d72.18b774",
+        "id": "d4a15d68.d294",
         "type": "http in",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "",
         "url": "/getCounter",
         "method": "get",
         "swaggerDoc": "",
-        "x": 140,
-        "y": 360,
+        "x": 180,
+        "y": 380,
         "wires": [
             [
-                "89b40c54.c9bc4"
+                "88764af8.bf81b8"
             ]
         ]
     },
     {
-        "id": "89b40c54.c9bc4",
-        "type": "subflow:a12955e.529e7a8",
-        "z": "498b1f31.4001",
-        "x": 330,
-        "y": 360,
+        "id": "88764af8.bf81b8",
+        "type": "subflow:5ae80e1e.d2cf7",
+        "z": "741e0568.b754bc",
+        "x": 370,
+        "y": 380,
         "wires": [
             [
-                "6e5ae304.b4711c"
+                "d1a8ea74.4e33c8"
             ]
         ]
     },
     {
-        "id": "1ab647e7.ba9e28",
+        "id": "bd9983cf.33f3c",
         "type": "inject",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "startup",
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "repeat": "",
+        "repeat": "1",
         "crontab": "",
         "once": true,
-        "x": 170,
-        "y": 300,
+        "x": 210,
+        "y": 320,
         "wires": [
             [
-                "429b3d8b.96cec4"
+                "8d268c82.0fc73"
             ]
         ]
     },
     {
-        "id": "811c9624.4b5ef8",
+        "id": "5d9eeeae.a2b94",
         "type": "inject",
-        "z": "498b1f31.4001",
+        "z": "741e0568.b754bc",
         "name": "",
         "topic": "",
         "payload": "",
@@ -330,11 +252,184 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 100,
-        "y": 200,
+        "x": 120,
+        "y": 220,
         "wires": [
             [
-                "e1300bd9.89c3a8"
+                "f69e399.12c62c8"
+            ]
+        ]
+    },
+    {
+        "id": "3d74f21b.3264ce",
+        "type": "switch",
+        "z": "741e0568.b754bc",
+        "name": "",
+        "property": "payload.Age",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "2000",
+                "vt": "str"
+            },
+            {
+                "t": "gt",
+                "v": "2000",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "96503e93.b0904",
+                "f69e399.12c62c8"
+            ],
+            [
+                "594cb55c.310cfc"
+            ]
+        ]
+    },
+    {
+        "id": "cea52def.390a3",
+        "type": "mqtt in",
+        "z": "741e0568.b754bc",
+        "name": "trigger",
+        "topic": "/opentrigger/signals/trigger",
+        "qos": "2",
+        "broker": "7135cb13.57e294",
+        "x": 110,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6ac0c8bb.e80248",
+        "type": "coap request",
+        "z": "741e0568.b754bc",
+        "method": "PUT",
+        "observe": false,
+        "url": "",
+        "content-format": "text/plain",
+        "raw-buffer": false,
+        "name": "COAP",
+        "x": 630,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "96503e93.b0904",
+        "type": "function",
+        "z": "741e0568.b754bc",
+        "name": "setup",
+        "func": "var p = msg.payload;\n//msg.payload = 'mode=blink&delay=50&times=2';\nmsg.payload = 'r=0&g=255&b=0&delay=50&times=1&led=0';\n//msg.url = 'coap://'+p.UniqueIdentifier+'/s/led'\nmsg.url = 'coap://'+p.UniqueIdentifier+'/led/RGB'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 100,
+        "wires": [
+            [
+                "6ac0c8bb.e80248"
+            ]
+        ]
+    },
+    {
+        "id": "594cb55c.310cfc",
+        "type": "function",
+        "z": "741e0568.b754bc",
+        "name": "setup",
+        "func": "msg.opentriggerPayload = msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 110,
+        "y": 480,
+        "wires": [
+            [
+                "5e428970.b17838"
+            ]
+        ]
+    },
+    {
+        "id": "e0f6a7d7.7d3958",
+        "type": "http request",
+        "z": "741e0568.b754bc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 250,
+        "y": 540,
+        "wires": [
+            [
+                "6ce78b95.ae52e4"
+            ]
+        ]
+    },
+    {
+        "id": "cd10d601.05f688",
+        "type": "coap request",
+        "z": "741e0568.b754bc",
+        "method": "PUT",
+        "observe": false,
+        "url": "",
+        "content-format": "text/plain",
+        "raw-buffer": false,
+        "name": "COAP",
+        "x": 550,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6ce78b95.ae52e4",
+        "type": "function",
+        "z": "741e0568.b754bc",
+        "name": "setup",
+        "func": "var p = msg.opentriggerPayload;\n//msg.payload = 'mode=blink&delay=50&times=2';\n//msg.url = 'coap://'+p.UniqueIdentifier+'/s/led'\n\nif(msg.statusCode === 200){\n    msg.payload = 'r=0&g=0&b=255&delay=50&times=1&led=0';\n}else{\n    msg.payload = 'r=255&g=0&b=0&delay=50&times=2&led=0';    \n}\n\nmsg.url = 'coap://'+p.UniqueIdentifier+'/led/RGB'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 540,
+        "wires": [
+            [
+                "cd10d601.05f688"
+            ]
+        ]
+    },
+    {
+        "id": "5e428970.b17838",
+        "type": "subflow:5ae80e1e.d2cf7",
+        "z": "741e0568.b754bc",
+        "name": "",
+        "x": 250,
+        "y": 480,
+        "wires": [
+            [
+                "ff2f158.a1a9fe8"
+            ]
+        ]
+    },
+    {
+        "id": "ff2f158.a1a9fe8",
+        "type": "function",
+        "z": "741e0568.b754bc",
+        "name": "setup",
+        "func": "var count = msg.payload;\nmsg.url = \"https://api.pushbullet.com/v2/pushes\";\nmsg.method = \"POST\"\nmsg.headers = {\n\t\"Content-Type\":\"application/json\",\n\t\"Access-Token\":\"<insert-access-token-here>\"\n};\nmsg.payload = {\n\t\"type\":\"note\",\n\t\"title\":\"CoffeeCounter\",\n\t\"body\": count.toString()\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 110,
+        "y": 540,
+        "wires": [
+            [
+                "e0f6a7d7.7d3958"
             ]
         ]
     }
