@@ -66,11 +66,11 @@
         "topic": "/opentrigger/signals/release",
         "qos": "2",
         "broker": "7135cb13.57e294",
-        "x": 110,
-        "y": 100,
+        "x": 90,
+        "y": 520,
         "wires": [
             [
-                "384b5fd7.762f"
+                "253bef33.e349e"
             ]
         ]
     },
@@ -83,7 +83,8 @@
         "y": 100,
         "wires": [
             [
-                "3d74f21b.3264ce"
+                "f69e399.12c62c8",
+                "96503e93.b0904"
             ]
         ]
     },
@@ -261,39 +262,6 @@
         ]
     },
     {
-        "id": "3d74f21b.3264ce",
-        "type": "switch",
-        "z": "741e0568.b754bc",
-        "name": "",
-        "property": "payload.Age",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "lte",
-                "v": "2000",
-                "vt": "str"
-            },
-            {
-                "t": "gt",
-                "v": "2000",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "outputs": 2,
-        "x": 370,
-        "y": 100,
-        "wires": [
-            [
-                "96503e93.b0904",
-                "f69e399.12c62c8"
-            ],
-            [
-                "594cb55c.310cfc"
-            ]
-        ]
-    },
-    {
         "id": "cea52def.390a3",
         "type": "mqtt in",
         "z": "741e0568.b754bc",
@@ -301,10 +269,12 @@
         "topic": "/opentrigger/signals/trigger",
         "qos": "2",
         "broker": "7135cb13.57e294",
-        "x": 110,
-        "y": 40,
+        "x": 90,
+        "y": 100,
         "wires": [
-            []
+            [
+                "384b5fd7.762f"
+            ]
         ]
     },
     {
@@ -317,7 +287,7 @@
         "content-format": "text/plain",
         "raw-buffer": false,
         "name": "COAP",
-        "x": 630,
+        "x": 490,
         "y": 100,
         "wires": [
             []
@@ -331,7 +301,7 @@
         "func": "var p = msg.payload;\n//msg.payload = 'mode=blink&delay=50&times=2';\nmsg.payload = 'r=0&g=255&b=0&delay=50&times=1&led=0';\n//msg.url = 'coap://'+p.UniqueIdentifier+'/s/led'\nmsg.url = 'coap://'+p.UniqueIdentifier+'/led/RGB'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 510,
+        "x": 370,
         "y": 100,
         "wires": [
             [
@@ -344,11 +314,11 @@
         "type": "function",
         "z": "741e0568.b754bc",
         "name": "setup",
-        "func": "msg.opentriggerPayload = msg.payload\nreturn msg;",
+        "func": "msg.opentriggerPayload = msg.payload\nif(msg.payload.Age >= 2000) return msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 110,
-        "y": 480,
+        "x": 330,
+        "y": 520,
         "wires": [
             [
                 "5e428970.b17838"
@@ -364,8 +334,8 @@
         "ret": "obj",
         "url": "",
         "tls": "",
-        "x": 250,
-        "y": 540,
+        "x": 350,
+        "y": 580,
         "wires": [
             [
                 "6ce78b95.ae52e4"
@@ -382,8 +352,8 @@
         "content-format": "text/plain",
         "raw-buffer": false,
         "name": "COAP",
-        "x": 550,
-        "y": 540,
+        "x": 610,
+        "y": 580,
         "wires": [
             []
         ]
@@ -396,8 +366,8 @@
         "func": "var p = msg.opentriggerPayload;\n//msg.payload = 'mode=blink&delay=50&times=2';\n//msg.url = 'coap://'+p.UniqueIdentifier+'/s/led'\n\nif(msg.statusCode === 200){\n    msg.payload = 'r=0&g=0&b=255&delay=50&times=1&led=0';\n}else{\n    msg.payload = 'r=255&g=0&b=0&delay=50&times=2&led=0';    \n}\n\nmsg.url = 'coap://'+p.UniqueIdentifier+'/led/RGB'\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 430,
-        "y": 540,
+        "x": 490,
+        "y": 580,
         "wires": [
             [
                 "cd10d601.05f688"
@@ -409,8 +379,8 @@
         "type": "subflow:5ae80e1e.d2cf7",
         "z": "741e0568.b754bc",
         "name": "",
-        "x": 250,
-        "y": 480,
+        "x": 470,
+        "y": 520,
         "wires": [
             [
                 "ff2f158.a1a9fe8"
@@ -425,11 +395,24 @@
         "func": "var count = msg.payload;\nmsg.url = \"https://api.pushbullet.com/v2/pushes\";\nmsg.method = \"POST\"\nmsg.headers = {\n\t\"Content-Type\":\"application/json\",\n\t\"Access-Token\":\"<insert-access-token-here>\"\n};\nmsg.payload = {\n\t\"type\":\"note\",\n\t\"title\":\"CoffeeCounter\",\n\t\"body\": count.toString()\n};\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 110,
-        "y": 540,
+        "x": 210,
+        "y": 580,
         "wires": [
             [
                 "e0f6a7d7.7d3958"
+            ]
+        ]
+    },
+    {
+        "id": "253bef33.e349e",
+        "type": "json",
+        "z": "741e0568.b754bc",
+        "name": "",
+        "x": 210,
+        "y": 520,
+        "wires": [
+            [
+                "594cb55c.310cfc"
             ]
         ]
     }
